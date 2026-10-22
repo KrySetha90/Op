@@ -15,14 +15,17 @@ import yt_dlp
 # --- Web Server to Keep the Bot Alive ---
 flask_app = Flask(__name__)
 
+
 @flask_app.route('/')
 def home():
-    return "Bot is running 24/7!"
+  return 'Bot is running 24/7!'
+
 
 def run_flask():
-    # Render provides a dynamic PORT environment variable
-    port = int(os.environ.get("PORT", 5000))
-    flask_app.run(host="0.0.0.0", port=port)
+  port = int(os.environ.get('PORT', 5000))
+  flask_app.run(host='0.0.0.0', port=port)
+
+
 # ----------------------------------------
 
 # Temporary storage for users' links
@@ -100,6 +103,8 @@ async def button_callback(
       'format': selected_format,
       'outtmpl': output_filename,
       'merge_output_format': 'mp4',
+      # This line bypasses the YouTube bot check on cloud servers
+      'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
   }
 
   try:
