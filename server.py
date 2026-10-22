@@ -1,4 +1,6 @@
 import os
+import threading
+from flask import Flask
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -9,6 +11,19 @@ from telegram.ext import (
     filters,
 )
 import yt_dlp
+
+# --- Web Server to Keep the Bot Alive ---
+flask_app = Flask(__name__)
+
+@flask_app.route('/')
+def home():
+    return "Bot is running 24/7!"
+
+def run_flask():
+    # Render provides a dynamic PORT environment variable
+    port = int(os.environ.get("PORT", 5000))
+    flask_app.run(host="0.0.0.0", port=port)
+# ----------------------------------------
 
 # Temporary storage for users' links
 user_links = {}
@@ -105,6 +120,10 @@ async def button_callback(
 
 
 if __name__ == '__main__':
+  # Start the Flask web server in a separate background thread
+  threading.Thread(target=run_flask, daemon=True).start()
+
+  # Run the Telegram Bot
   app = (
       ApplicationBuilder()
       .token('8950091020:AAHVvatmxRbCfZ47rzD-Qui6pnKKu7QMCYY')
