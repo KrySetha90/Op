@@ -103,11 +103,9 @@ async def button_callback(
       'format': selected_format,
       'outtmpl': output_filename,
       'merge_output_format': 'mp4',
-      # Expanded client list to bypass cloud server blocking
       'extractor_args': {
           'youtube': {'player_client': ['ios', 'mweb', 'android', 'web']}
       },
-  }
   }
 
   try:
